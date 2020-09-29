@@ -24,7 +24,9 @@
 #' `local.config.R` file that overrides the below `inputdata` variable.
 inputdata <- c(
   # DOESN'T EXIST
-  dat01 = 'data/kcsample.csv'
+  dat01 = 'data/kcsample.zip'
+  # the file within the zip that we use
+  ,dat02 = 'DF_kc_v5_dbb4a700.csv'
   # the working copy of the data dictionary
   ,map0 = 'data/DF_kc_v5_dbb4a700_dict.csv'
   # manual mappings intended to persist from one refresh to the next
