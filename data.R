@@ -69,23 +69,18 @@ dat01[.sample,on = 'patient_num',z_subsample:=subsample];
 #' ## Missingness
 #'
 #' ### Any diagnoses at all during visit?
-dat01$a_anydiagtf <- apply(dat01[,.SD,.SDcols=setdiff(c(v(c_icd10),v(c_icd9))
-                                                      ,v(c_info))],1,any);
 dat01$a_anydiagtf <- c(v(c_icd10),v(c_icd9)) %>% paste0('_tf') %>% 
   intersect(names(dat01)) %>% `[`(dat01,,.SD,.SDcols=.) %>% apply(1,any);
 
-#######################################################
-message('Works up to here');
-browser();
-
 #' ### Any procedures at all during visit?
-dat01$a_anyproctf <- apply(dat01[,.SD,.SDcols=setdiff(c(v(c_icd10pcs),v(c_cpt))
-                                                      ,v(c_info))],1,any);
-#' ### Any labs at all during visit?
-dat01$a_anylabstf <- apply(dat01[,.SD,.SDcols=setdiff(v(c_loinc),v(c_info))],1
-                           ,function(xx) any(!is.na(xx)));
-dat01$a_anythingtf <- with(dat01,a_anydiagtf|a_anyproctf|a_anylabstf);
+dat01$a_anyproctf <- c(v(c_icd10pcs),v(c_cpt)) %>% paste0('_tf') %>% 
+  intersect(names(dat01)) %>% `[`(dat01,,.SD,.SDcols=.) %>% apply(1,any);
 
+#' ### Any labs at all during visit?
+dat01$a_anylabstf <- v(c_loinc) %>% paste0('_mn') %>% 
+  intersect(names(dat01)) %>% `[`(dat01,,.SD,.SDcols=.) %>% apply(1,function(xx) any(!is.na(xx)));
+
+dat01$a_anythingtf <- with(dat01,a_anydiagtf|a_anyproctf|a_anylabstf);
 
 # remove unused ----
 #' ## Remove unused columns
@@ -98,54 +93,65 @@ dat01$a_anythingtf <- with(dat01,a_anydiagtf|a_anyproctf|a_anylabstf);
 #' ## Rename columns
 #'
 #' Rename columns to more easily recognizable names along with dct0 entries
+#+ rename_columns
 names(dat01) <- dct0[,c('colname','rename')] %>% na.omit %>%
-  submulti(names(dat01),.,method='exact');
+  # catch the case where there is no 'rename' column
+  {if(nrow(.)==0) names(dat01) else {
+    submulti(names(dat01),.,method='startsends')}};
+
 #' Update the dictionary to match renamed columns
 if(debug) message('Syncing dictionary');
 dct0 <- sync_dictionary(dat01);
 
+
 #' ## Recode or derive variables
 #'
 #' Recode the death-related columns
-dat01$v_vitalstatnaaccr <- grepl('NAACCR|1760:0',dat01$v_vitalstatnaaccr);
-dat01$vi_dischdsp_death <- grepl('DischDisp:E',dat01$v_dischdsp);
-dat01$vi_dischst_death <- grepl('DischStat:EX',dat01$v_dischst);
-dat01[,vi_c_death := do.call(pmax,.SD) %>% as.logical()
-                          ,.SDcols=v(c_death)];
+# 
+# doesn't work with this dataset at this time
+# dat01$v_vitalstatnaaccr <- grepl('NAACCR|1760:0',dat01$v_vitalstatnaaccr);
+# dat01$vi_dischdsp_death <- grepl('DischDisp:E',dat01$v_dischdsp);
+# dat01$vi_dischst_death <- grepl('DischStat:EX',dat01$v_dischst);
+# dat01[,vi_c_death := do.call(pmax,.SD) %>% as.logical()
+#                          ,.SDcols=v(c_death)];
+
 #' Recode visit-related columns
-dat01$vi_icu <- grepl('VISITDETAIL\\|SPEC:80',dat01$v_department);
+# 
+# doesn't work with this dataset at this time
+
+# dat01$vi_icu <- grepl('VISITDETAIL\\|SPEC:80',dat01$v_department);
 #' `vi_emergdept` is emergency department as per provider specialty
 #' for now not using this, using the one below
-dat01$vi_emergdept <- grepl('VISITDETAIL\\|SPEC:45',dat01$v_department);
-dat01$vi_ip <- grepl('ENC\\|TYPE:IP',dat01$v_enctype);
+# dat01$vi_emergdept <- grepl('VISITDETAIL\\|SPEC:45',dat01$v_department);
+# dat01$vi_ip <- grepl('ENC\\|TYPE:IP',dat01$v_enctype);
 #' `vi_ed` is emergency department as per encounter type.
-dat01$vi_ed <- grepl('ENC\\|TYPE:ED',dat01$v_enctype);
+# dat01$vi_ed <- grepl('ENC\\|TYPE:ED',dat01$v_enctype);
 
 #' Create hospital stay variables
 #'
 #' `z_ipv` : Which inpatient stay is it for this patient?
-dat01[,z_ipv := cumsum(vi_ip),by=patient_num];
+#dat01[,z_ipv := cumsum(vi_ip),by=patient_num];
 #' `z_inip` : Does this row of data represent a day that's part of
 #'            an inpatient stay?
-dat01[,z_inip := any(vi_ip) &
-        seq_len(.N) <= rle(vi_ip|is.na(v_enctype) &
-                             diff(c(NA,age_at_visit_days))==1)$length[1]
-      ,by=list(patient_num,z_ipv)];
+#dat01[,z_inip := any(vi_ip) &
+      #   seq_len(.N) <= rle(vi_ip|is.na(v_enctype) &
+      #                        diff(c(NA,age_at_visit_days))==1)$length[1]
+      # ,by=list(patient_num,z_ipv)];
 #' `a_los` : Length of stay
-dat01[,a_los := -1][,a_los := ifelse(vi_ip,sum(as.numeric(z_inip)),NA)
-      ,by=list(patient_num,z_ipv)];
+#dat01[,a_los := -1][,a_los := ifelse(vi_ip,sum(as.numeric(z_inip)),NA)
+      # ,by=list(patient_num,z_ipv)];
 #' `z_age_at_disch_days` : age at discharge (needed for readmission calc)
-dat01[,z_age_at_disch_days := -1 ][
-  ,z_age_at_disch_days := age_at_visit_days[1]+a_los[1]-1
-  , by=list(patient_num,z_ipv)];
+# dat01[,z_age_at_disch_days := -1 ][
+#   ,z_age_at_disch_days := age_at_visit_days[1]+a_los[1]-1
+#   , by=list(patient_num,z_ipv)];
 #' `a_t_since_disch` : at admission, days since previous discharge
-dat01[,a_t_since_disch := -1][
-  ,a_t_since_disch := ifelse(vi_ip & z_ipv > 1
-                             ,age_at_visit_days - shift(z_age_at_disch_days
-                                                        ,fill=-1E6),NA)
-  ,by=patient_num];
+# dat01[,a_t_since_disch := -1][
+#   ,a_t_since_disch := ifelse(vi_ip & z_ipv > 1
+#                              ,age_at_visit_days - shift(z_age_at_disch_days
+#                                                         ,fill=-1E6),NA)
+#   ,by=patient_num];
 #' `vi_readm30` : 30-day readmission
-dat01$vi_readm30 <- !is.na(dat01$a_t_since_disch) & dat01$a_t_since_disch <=30;
+# dat01$vi_readm30 <- !is.na(dat01$a_t_since_disch) & dat01$a_t_since_disch <=30;
 
 #' Simplify `race_cd`
 dat01$race_cd <- forcats::fct_collapse(dat01$race_cd,White='white',Black='black'
@@ -156,8 +162,10 @@ dat01$race_cd <- forcats::fct_collapse(dat01$race_cd,White='white',Black='black'
 
 #' Discharge to intermediate care or skilled nursin (for patients originally
 #' admitted from home)
-dat01$vi_snf <- grepl('DischStat:(SN|ICF)',dat01$v_dischst) &
-  grepl('ADMIT|SOURCE:HO',dat01$v_admitsrc);
+# 
+# not working for this dataset
+# dat01$vi_snf <- grepl('DischStat:(SN|ICF)',dat01$v_dischst) &
+#   grepl('ADMIT|SOURCE:HO',dat01$v_admitsrc);
 
 # debug/QC ----
 #' ### QC
