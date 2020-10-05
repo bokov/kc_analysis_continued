@@ -47,8 +47,10 @@ dat01 <- unzip(inputdata['dat01']) %>% basename %>%
 
 dat01 <- dat01[age_at_visit_days >= 18*362.25,][
   ,if(.N>2) .SD, by=patient_num][
-    # creating a randomly selected index visit for each patient
-    ,z_ixvis:=sample(age_at_visit_days[-c(1,.N)],1),by=patient_num][
+    # z_ixvis was originally a randomly selected index visit for each patient
+    # but for now we want all visits, yet cannot simply remove z_ixvis because
+    # other stuff depends on it so instead we set it to the first observed visit
+    ,z_ixvis:=head(age_at_visit_days,1),by=patient_num][
       ,a_t1:=age_at_visit_days-z_ixvis,by=patient_num][
         ,a_t0:=shift(a_t1),by=patient_num][
           # converting `start_date` to a proper date column for subsequent join
@@ -169,6 +171,40 @@ dat01$race_cd <- forcats::fct_collapse(dat01$race_cd,White='white',Black='black'
 
 # debug/QC ----
 #' ### QC
+#' 
+#' Let's start by listing problems that could possibly occur
+#' 
+# . problems ----
+#' * Categorical mismatches between NAACCR and EMR (including missing)
+#'     * Sex
+#'     * Hispanic ethnicity
+#'     * Race
+#' * Date discrepancies
+#'     * Diagnosis
+#'     * Principal surgery
+#'     * Relapse
+#'     * Death
+#'     
+#' * Impossible sequences of events
+#'     * Anything prior to birth
+#'     * Principal surgery, relapse, or death before first (de-facto) diagnosis
+#'     * Relapse or death before principal surgery
+#'     * Death before relapse
+#'     * Anything at all after death
+#' * Patients who had a kidney tumor removed before their first encounter
+#' * Patients without an actual kidney tumor, only e.g. renal pelvis
+#' * Patients whose kidney tumor was a met from some other location 
+#'   (does this happen?)
+#'   
+# . special subgroups ----
+#' Other special subgroups (not necessarily QC issues)
+#' 
+#' * Patients who have a visit history prior to their kidney cancer
+#' * Pediatric patients
+#' * Missing NAACCR data
+#' * Missing EMR data
+#' * Not missing either NAACCR or EMR
+#' 
 #' Number of visits seeming to occur prior to date of birth
 .debug_birth <- subset(dat01,age_at_visit_days < 0);
 nrow(.debug_birth);
