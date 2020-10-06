@@ -71,7 +71,11 @@ set.seed(project_seed);
 dat01[.sample,on = 'patient_num',z_subsample:=subsample];
 
 # aggregate ----
-#'
+#' 
+#' Indicator variable for whether or not a visit is directly included in NAACCR
+dat01$a_n_visit <- apply(dat01[,v(c_naaccr,dat01),with=FALSE],1
+                         ,function(xx) any(!is.na(xx)));
+
 #' ## Aggregate the outcomes indicators
 
 #' ## Missingness
