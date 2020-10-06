@@ -107,15 +107,60 @@ dat01$a_anythingtf <- with(dat01,a_anydiagtf|a_anyproctf|a_anylabstf);
 #'
 #' Rename columns to more easily recognizable names along with dct0 entries
 #+ rename_columns
-names(dat01) <- dct0[,c('colname','rename')] %>% na.omit %>%
-  # catch the case where there is no 'rename' column
-  {if(nrow(.)==0) names(dat01) else {
-    submulti(names(dat01),.,method='startsends')}};
+setnames(dat01,function(xx){
+  submulti(xx,dct0[,c('colname','rename')] %>% na.omit,method='startsends')
+  },skip_absent = TRUE);
+# names(dat01) <- dct0[,c('colname','rename')] %>% na.omit %>%
+#   # catch the case where there is no 'rename' column
+#   {if(nrow(.)==0) names(dat01) else {
+#     submulti(names(dat01),.,method='startsends')}};
 
 #' Update the dictionary to match renamed columns
 if(debug) message('Syncing dictionary');
 dct0 <- sync_dictionary(dat01);
 
+if(debug) dat01.01 <- copy(dat01);
+
+#' Mass relabel/reorder factor variables.
+for(ii in v(c_sortlabels)){
+  #if(ii == 'n_rectype') browser();
+  dat01[[ii]] <- factorclean(dat01[[ii]]
+                             ,remove=c('NAACCR\\|[0-9]{3,4}:',';00','00;',';0$'
+                                       ,'^0')
+                             ,otherfun = function(xx) gsub(';',',',xx)
+                             ,spec_mapper = levels_map,var=ii,droplevels = T)};
+for(ii in setdiff(v(c_naaccr_race),v(c_info))){
+  dat01[[ii]] <- factorclean(dat01[[ii]]
+                             ,remove=c('NAACCR\\|[0-9]{3,4}:',';00','00;',';0$'
+                                       ,'^0')
+                             ,otherfun = function(xx) gsub(';',',',xx)
+                             ,spec_mapper = levels_map,var='_rc'
+                             ,droplevels = T)};
+#' Convert NAACCR race codes
+dat01[
+  ,a_n_race := interaction(.SD),.SDcols = setdiff(v(c_naaccr_race),v(c_info))];
+levels(dat01$a_n_race) <- gsub('\\.(88|Unknown)','',levels(dat01$a_n_race));
+
+#' Simplified recurrence type
+#' RECURRENCE VARIABLE
+dat01$a_n_recur <- factor(dat01$n_rectype);
+levels(dat01$a_n_recur)[!levels(dat01$a_n_recur) %in% 
+                          c('Unknown if recurred or was ever gone'
+                            ,'Never disease-free','Disease-free'
+                            ,grep('Ambig_',levels(dat01$a_n_recur)
+                                  ,val=T))]<-'Recurred';
+
+#' Unified NAACCR diabetes comorbidity
+#' 
+#' TODO: verify that this is catching diabetes correctly
+dat01[,a_n_dm := apply(.SD,1,function(xx) any(grepl('250[0-9]{2}$',xx)))
+      ,.SDcols = setdiff(v(c_naaccr_comorb),v(c_info))];
+
+# kcpatients subsets ----
+#' Find the patients which had kidney cancer
+# kcpatients.emr <- subset(dat01,e_kc_i10|e_kc_i9)$patient_num %>% unique;
+# the above is equivalent to the below, but less efficient
+dat01[,z_haskc := any(e_kc_i10|e_kc_i9,na.rm = TRUE),by=patient_num];
 
 #' ## Recode or derive variables
 #'
