@@ -11,6 +11,7 @@ renameoutput <- function(file=get('.currentscript')
   file.symlink(paste0(file,suffix),newfile);
   if(file.exists(newfile)) sprintf('Linked %s to %s',paste0(file,suffix)
                                    ,newfile);
+  newfile;
 }
 
 fs <- function(str,text=str,url=paste0('#',gsub('[^_a-z0-9]','-',tolower(str)))
