@@ -7,7 +7,7 @@
 #'
 #+ message=F,echo=F
 # init ----
-debug <- 0;
+debug <- 1;
 # note: the `icdcoder` library might be needed in the future, and it has to be
 # manually downloaded and installed from https://github.com/wtcooper/icdcoder/
 # (package hasn't been updated in 5 years, but only existing way to map ICD9 to
@@ -46,6 +46,7 @@ if(debug) message('About to read');
 set.seed(project_seed);
 dat01 <- unzip(inputdata['dat01']) %>% basename %>% 
   intersect(basename(inputdata['dat02'])) %>% fread;
+if(debug) dat01.00 <- copy(dat01);
 
 dat01 <- dat01[age_at_visit_days >= 18*362.25,][
   ,if(.N>2) .SD, by=patient_num][
