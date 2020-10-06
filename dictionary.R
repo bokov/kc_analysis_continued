@@ -32,13 +32,27 @@ map0 <- try_import(inputdata['map0']);
 #' pulls
 map1 <- try_import(inputdata['map1']);
 map2 <- try_import(inputdata['map2']);
+map3 <- try_import(inputdata['map3']);
 #' Patient safety indicators
 psi <- try_import(inputdata['psi']);
 
-#' Do some cleanup
+# cleanup ----
+#' ## Do some cleanup
+#' 
+#' Horrible hack, but fixes the duplicated column problem
+if(basename(inputdata['map0'])=='DF_kc_v5_dbb4a700_dict.csv'){
+  map0 <- subset(map0,!colname %in% c('v002_Plvs_ptnts_cd', 'v002_Plvs_ptnts'));
+};
+map0$name <- gsub('\\[[,0-9]{1,11} facts; [,0-9]{1,11} patients\\]',''
+                  , map0$name) %>% coalesce(.,map0$colname);
+map0$durablename <- tolower(map0$durablename) %>% coalesce(map0$colname);
+map1$durablename <- tolower(map1$durablename);
 map0$c_info <- !grepl('_(tf|cd|dx|mn|STATIC)$'
                       ,coalesce(map0$durablename,'STATIC'));
 map0$ddomain <- coalesce(map0$ddomain,'STATIC');
+
+#' true-false columns
+map0$c_truefalse <- grepl('_tf$',map0$durablename);
 
 #' Create code-groups (the info column only, because that's where actual codes
 #' are stored)
@@ -68,22 +82,61 @@ map0$standard_code <- with(
       paste0('RXCUI:',gsub('^.*([0-9]{4})[\\]{0,1}$','\\1',concept_path))));
 
 #' Join on map1 and add rows from map2
-map3 <- left_join(map0,map1) %>% bind_rows(map2);
+#+ map4_create
+map4 <- left_join_merge(map0,map1) %>% 
+  left_join_merge(map3,by=c('name'='colname_long')
+                  ,yysubset=alist(c_naaccr & 
+                                    colname_long != 
+                                    'Kidney and Renal Pelvis')) %>%
+  bind_rows(map2);
+# map4 <- select(map1,-nval_num) %>% 
+#   # columns with '_per' suffixes are the first-priority fallback columns for
+#   # corresponding non-'_per' columns
+#   left_join(map0,.,by=c('durablename','name'),suffix=c('','_per')) %>%
+#   # 'Kidney and Renal Pelvis' has multiple matches in 'name'
+#   left_join(subset(map3,c_naaccr & 
+#                      colname_long != 'Kidney and Renal Pelvis') #%>% 
+#               #select(-c('c_naaccr','c_death'))
+#             # columns with '_legacy' suffixes are the second-priority fallback 
+#             # columns for corresponding non-'_per' columns
+#             ,by=c("name"="colname_long"), suffix=c('','_legacy')) %>% 
+#   bind_rows(map2);
+# for(ii in grep('^c_.*_per$',names(map4),val=TRUE)){
+#   iibase <- gsub('_per$','',ii);
+#   map4[[iibase]] <- coalesce(map4[[iibase]],map4[[ii]]);
+# }
 
-#' Insure no missing display names
-map3$dispname_short <- with(map3,coalesce(dispname_short,dispname));
+map4$rename <- with(map4,coalesce(rename,varname));
+
+map4$rename <- with(map4,ifelse(c_info,NA,rename));
 
 # QC ----
 #' # QC warnings (if any)
 #'
+#' Check for duplicated rows
+if(nrow(map4) != nrow(map0)+nrow(map2)){
+  message('Duplicated rows created in data dictionary during mapping.');
+}
+.duplicatedcols <- with(map4,colname[duplicated(colname)]);
+#' 
+#' 
+if(length(map4$colname) != length(unique(map4$colname))){
+  cat('The following colname values are repeated:\n');
+  pander(.duplicatedcols);
+}
+
+#' Insure no missing display names
+map4$dispname <- with(map4,coalesce(dispname,chartname));
+map4$dispname_short <- with(map4,coalesce(dispname_short,dispname));
+
 #' `.missing_from_response` should be empty.
-.missing_from_response <- setdiff(v(c_mainresponse,dictionary=map3)
-                                  ,v(c_response,dictionary=map3));
+.missing_from_response <- setdiff(v(c_mainresponse,dictionary=map4)
+                                  ,v(c_response,dictionary=map4));
 .missing_from_response;
 
 
 #### write varmap.csv ####
-export(map3,'varmap.csv');
+export(map4,'varmap.csv');
 
 #+ echo=F,eval=F
 c()
