@@ -33,9 +33,13 @@ inputdata <- c(
   ,map1 = 'data/persistent_dict.tsv'
   # a table of derived variables which will get created later
   ,map2 = 'data/derived_var_dictionary.tsv'
+  # mappings from previous attempt
+  ,map3 = 'data/datadictionary_static.csv'
   # mappings of ICD10 codes to patient safety indicators
   # from Southern et al., Medical Care 2017 doi: 10.1097/MLR.0000000000000649
   ,psi = 'data/southern_icd10patientsafetycodes_medicalcare17.csv'
+  # factor levels
+  ,levels_map = 'data/levels_map.csv'
 );
 
 #### project options ####
