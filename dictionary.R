@@ -45,9 +45,9 @@ if(basename(inputdata['map0'])=='DF_kc_v5_dbb4a700_dict.csv'){
 };
 map0$name <- gsub('\\[[,0-9]{1,11} facts; [,0-9]{1,11} patients\\]',''
                   , map0$name) %>% coalesce(.,map0$colname);
-map0$durablename <- tolower(map0$durablename) %>% coalesce(map0$colname);
+map0$durablename <- with(map0,coalesce(durablename,colname)) %>% tolower;
 map1$durablename <- tolower(map1$durablename);
-map0$c_info <- !grepl('_(tf|cd|dx|mn|STATIC)$'
+map0$c_info <- !grepl('_(tf|cd|dx|mn|num|days|date|STATIC)$',map0$durablename
                       ,coalesce(map0$durablename,'STATIC'));
 map0$ddomain <- coalesce(map0$ddomain,'STATIC');
 
