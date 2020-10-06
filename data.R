@@ -37,6 +37,8 @@ if(!file.exists('varmap.csv')) source('dictionary.R',local=.srcenv);
 #' Then load `varmap.csv`
 if(debug) message('Importing varmap.csv');
 dct0 <- import('varmap.csv');
+#' load levels map
+levels_map <- import(inputdata['levels_map']);
 # read data ----
 #' # Read data
 if(debug) message('About to read');
@@ -55,6 +57,10 @@ dat01 <- dat01[age_at_visit_days >= 18*362.25,][
         ,a_t0:=shift(a_t1),by=patient_num][
           # converting `start_date` to a proper date column for subsequent join
           ,start_date := as.Date(start_date)];
+if(basename(inputdata['dat02'])=='DF_kc_v5_dbb4a700.csv'){
+  dat01[,c('v002_Plvs_ptnts_cd', 'v002_Plvs_ptnts') := NULL]
+}
+
 # transform data ----
 #' # Transform data
 #'
@@ -162,7 +168,7 @@ dat01$race_cd <- forcats::fct_collapse(dat01$race_cd,White='white',Black='black'
                                        ,Unknown=c('@','unknown','i choose not')
                                        ,Asian='asian') %>% forcats::fct_infreq();
 
-#' Discharge to intermediate care or skilled nursin (for patients originally
+#' Discharge to intermediate care or skilled nursing (for patients originally
 #' admitted from home)
 # 
 # not working for this dataset
@@ -172,7 +178,10 @@ dat01$race_cd <- forcats::fct_collapse(dat01$race_cd,White='white',Black='black'
 # debug/QC ----
 #' ### QC
 #' 
-#' Let's start by listing problems that could possibly occur
+#' Duplicated column names: (should be empty)
+names(dat01)[duplicated(names(dat01))];
+#' 
+#' A list of problems that could possibly occur
 #' 
 # . problems ----
 #' * Categorical mismatches between NAACCR and EMR (including missing)
