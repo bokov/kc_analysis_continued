@@ -39,7 +39,7 @@ inputdata <- c(
   # from Southern et al., Medical Care 2017 doi: 10.1097/MLR.0000000000000649
   ,psi = 'data/southern_icd10patientsafetycodes_medicalcare17.csv'
   # factor levels
-  ,levels_map = 'data/levels_map.csv'
+  ,levels_map = 'data/levels_map.tsv'
 );
 
 #### project options ####
