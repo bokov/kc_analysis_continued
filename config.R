@@ -27,6 +27,9 @@ inputdata <- c(
   dat01 = 'data/kcsample.zip'
   # the file within the zip that we use
   ,dat02 = 'DF_kc_v5_dbb4a700.csv'
+  # the pre-processed data file (not part of repository, must be already 
+  # in your posession
+  ,dat03 = '2010061114_e3c84_DF_kc_v5_dbb4a700_dev.tsv'
   # the working copy of the data dictionary
   ,map0 = 'data/DF_kc_v5_dbb4a700_dict.csv'
   # manual mappings intended to persist from one refresh to the next
