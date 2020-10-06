@@ -89,22 +89,6 @@ map4 <- left_join_merge(map0,map1) %>%
                                     colname_long != 
                                     'Kidney and Renal Pelvis')) %>%
   bind_rows(map2);
-# map4 <- select(map1,-nval_num) %>% 
-#   # columns with '_per' suffixes are the first-priority fallback columns for
-#   # corresponding non-'_per' columns
-#   left_join(map0,.,by=c('durablename','name'),suffix=c('','_per')) %>%
-#   # 'Kidney and Renal Pelvis' has multiple matches in 'name'
-#   left_join(subset(map3,c_naaccr & 
-#                      colname_long != 'Kidney and Renal Pelvis') #%>% 
-#               #select(-c('c_naaccr','c_death'))
-#             # columns with '_legacy' suffixes are the second-priority fallback 
-#             # columns for corresponding non-'_per' columns
-#             ,by=c("name"="colname_long"), suffix=c('','_legacy')) %>% 
-#   bind_rows(map2);
-# for(ii in grep('^c_.*_per$',names(map4),val=TRUE)){
-#   iibase <- gsub('_per$','',ii);
-#   map4[[iibase]] <- coalesce(map4[[iibase]],map4[[ii]]);
-# }
 
 map4$rename <- with(map4,coalesce(rename,varname));
 
