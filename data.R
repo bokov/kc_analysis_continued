@@ -7,7 +7,7 @@
 #'
 #+ message=F,echo=F
 # init ----
-debug <- 1;
+debug <- 0;
 # note: the `icdcoder` library might be needed in the future, and it has to be
 # manually downloaded and installed from https://github.com/wtcooper/icdcoder/
 # (package hasn't been updated in 5 years, but only existing way to map ICD9 to
@@ -369,7 +369,7 @@ file.rename(.outfile,paste0(format(Sys.time(),'%y%m%d%H%M'),'_'
                                       ,rbind(c('\\.[^.]*$','_test.tsv')
                                              ,c('^[0-9]{11,13}_','')))));
 
-.savelist <- if(debug>0) setdiff(ls(),.origfiles) else c();
+.savelist <- setdiff(ls(),.origfiles);
 suppressWarnings(save(file=file.path(.workdir
                                      ,paste0(basename(.currentscript)
                                              ,'.rdata'))
