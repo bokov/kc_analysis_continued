@@ -1,181 +1,183 @@
-durablename	nval_num	dispname	name	comment_persistant	rename	c_patdata	c_vitals	c_death	c_multicode	c_main_naaccr_vars	c_naaccr	c_tte	c_istte	c_coderange	c_coderange_info	c_kcdiag	c_180808	c_sortlabels	c_override_keep	c_dupes
-sex_cd		Sex	sex_cd			TRUE														
-language_cd		Language	language_cd			TRUE												TRUE		
-race_cd		Race	race_cd			TRUE												TRUE		
-age_at_visit_days		Patient age (days)	age_at_visit_days			TRUE														
-age_at_death_days		Patient age at death (days)	age_at_death_days			TRUE														
-_vntltrs_brthng_tf			1014859 - Ventilation assist and management, initiation of pressure or volume preset ventilators for assisted or controlled breathing																	
-_Sts__ptnts_cd			1760 Vital Status	Vital status according to NAACCR, 0 = deceased, 1 = alive		TRUE		TRUE												
-_Extrcrprl_Prcdr_tf			5A - Extracorporeal or Systemic Assistance and Performance @ Physiological Systems (Procedure)																	
-_Src__ptnts_cd			Admit Source		v_admitsrc															
-_Crnvrs_unspcfd_tf			B34.2 - Coronavirus infection, unspecified																	
-_Crnvrs_elswhr_tf			B97.2 - Coronavirus as the cause of diseases classified elsewhere																	
-_Indx__ptnts_mn	1		Body Mass Index				TRUE													
-_fcts_ptnts_cd			COVID-19 RFV BASE	Not sure if RFV means suspected COVID-19 or confirmed	v_covid_rfv															
-_Prsr__ptnts_mn	1		Diastolic Blood Pressure		v_diastolic		TRUE													
-_Dspstn__ptnts_cd			Discharge Disposition	DischDisp:E = deceased (expired)	v_dischdsp				TRUE										TRUE	
-_Sts__ptnts_cd			Discharge Status	DischStat:EX = deceased (expired)	v_dischst				TRUE										TRUE	
-_ACCDNTL_ptnts_tf			E880-E888.9 - ACCIDENTAL FALLS																	
-_undtrmnd_acdntl_tf			E987 - Falling from high place, undetermined whether accidentally or purposely inflicted																	
-_Ethnct__ptnts_cd			Ethnicity			TRUE														
-_Fncl_ptnts_cd			Financial Class																	
-_Insttn__ptnts_cd			Institution																	
-_rsprtr_ptnts_tf			J00-J99 - Diseases of the respiratory system (J00-J99)																	
-_Lng__ptnts_cd			Language			TRUE														
-_Strtn_ptnts_mn	1		O2 Saturation (UHS Only)		v_o2sat		TRUE													
-_Pls__ptnts_mn	1		Pulse				TRUE													
-_crcltr_rsprtr_tf			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)	Might need to break specific codes out of this one																
-_Rsprtn_ptnts_mn	1		Respiration Rate				TRUE													
-_Scnmc_ptnts_cd	1		Socioeconomic Status	Complex variable		TRUE														
-_Prsr__ptnts_mn	1		Systolic Blood Pressure		v_systolic		TRUE													
-_Tmprtr_ptnts_mn	1		Temperature (F)				TRUE													
-_Usg__ptnts_cd	1		Tobacco Usage	Does this exclude non-use codes?			TRUE													
-_Pdstrn_cnvnc_tf			V00 - Pedestrian conveyance accident																	
-_UTMd___ptnts_cd			Visit Reason (UTMed)		v_visreason															
-_stmblng_ptnts_tf			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)																	
-_obsrvtn_cndtns_tf			Z03.8 - Encounter for observation for other suspected diseases and conditions ruled out	Does this imply COVID-19 negative or positive?																
-_dss__ptnts_tf			Z11.59 - Encounter for screening for other viral diseases																	
-_spctd_cmncbl_tf			Z20.828 - Contact with and (suspected) exposure to other viral communicable diseases																	
-_Dpndnc_rsprtr_tf			Z99.1 - Dependence on respirator																	
-_Dprtmnt__ptnts_cd			Clinical Service Department		v_department				TRUE											
-_Encntr_ptnts_cd			Encounter Type		v_enctype				TRUE											
-_kdn_rnl_plvs			Kidney and Renal Pelvis		n_seer_kcancer					TRUE	TRUE						TRUE			
-_mlgnt_ptnts_tf		KC ICD10, i2b2	189.0 - Malignant neoplasm of kidney, except pelvis		e_kc_i9					FALSE	FALSE	TRUE	TRUE				TRUE			
-_mlgnt_ptnts_tf		KC ICD9, i2b2	C64 - Malignant neoplasm of kidney, except renal pelvis		e_kc_i10					FALSE	FALSE	TRUE	TRUE				TRUE			
-_intstnl_infcts_cd			A00-A09 - Intestinal infectious diseases (A00-A09)											TRUE	FALSE					
-_intstnl_infcts			A00-A09 - Intestinal infectious diseases (A00-A09)											FALSE	TRUE					
-_bctrl_ptnts_cd			A30-A49 - Other bacterial diseases (A30-A49)											TRUE	FALSE					
-_bctrl_ptnts			A30-A49 - Other bacterial diseases (A30-A49)											FALSE	TRUE					
-_infcts_ptnts_cd			B95-B97 - Bacterial and viral infectious agents (B95-B97)											TRUE	FALSE					
-_infcts_ptnts			B95-B97 - Bacterial and viral infectious agents (B95-B97)											FALSE	TRUE					
-_prdmntl_trnsmsn_cd			A50-A64 - Infections with a predominantly sexual mode of transmission (A50-A64)											TRUE	FALSE					
-_prdmntl_trnsmsn			A50-A64 - Infections with a predominantly sexual mode of transmission (A50-A64)											FALSE	TRUE					
-_sprchtl_ptnts_cd			A65-A69 - Other spirochetal diseases (A65-A69)											TRUE	FALSE					
-_sprchtl_ptnts			A65-A69 - Other spirochetal diseases (A65-A69)											FALSE	TRUE					
-_infctns_chrctrzd_cd			B00-B09 - Viral infections characterized by skin and mucous membrane lesions (B00-B09)											TRUE	FALSE					
-_infctns_chrctrzd			B00-B09 - Viral infections characterized by skin and mucous membrane lesions (B00-B09)											FALSE	TRUE					
-_dss_ptnts_cd			B25-B34 - Other viral diseases (B25-B34)											TRUE	FALSE					
-_dss_ptnts			B25-B34 - Other viral diseases (B25-B34)											FALSE	TRUE					
-_b_b__ptnts_cd			B35-B49 - Mycoses (B35-B49)											TRUE	FALSE					
-_b_b__ptnts			B35-B49 - Mycoses (B35-B49)											FALSE	TRUE					
-_prtzl_ptnts_cd			B50-B64 - Protozoal diseases (B50-B64)											TRUE	FALSE					
-_prtzl_ptnts			B50-B64 - Protozoal diseases (B50-B64)											FALSE	TRUE					
-_hlmnths_ptnts_cd			B65-B83 - Helminthiases (B65-B83)											TRUE	FALSE					
-_hlmnths_ptnts			B65-B83 - Helminthiases (B65-B83)											FALSE	TRUE					
-_nplsms_ptnts_cd			C00-D49 - Neoplasms (C00-D49)											TRUE	FALSE					
-_nplsms_ptnts_dx			C00-D49 - Neoplasms (C00-D49)											FALSE	TRUE					
-_nplsms_ptnts			C00-D49 - Neoplasms (C00-D49)											FALSE	TRUE					
-_bld_frmng_ptnts_cd			D50-D89 - Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism (D50-D89)											TRUE	FALSE					
-_bld_frmng_ptnts			D50-D89 - Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism (D50-D89)											FALSE	TRUE					
-_endcrn_ntrtnl_cd			E00-E89 - Endocrine, nutritional and metabolic diseases (E00-E89)											TRUE	FALSE					
-_endcrn_ntrtnl			E00-E89 - Endocrine, nutritional and metabolic diseases (E00-E89)											FALSE	TRUE					
-_phslgcl_cndtns_cd			F01-F09 - Mental disorders due to known physiological conditions (F01-F09)											TRUE	FALSE					
-_phslgcl_cndtns			F01-F09 - Mental disorders due to known physiological conditions (F01-F09)											FALSE	TRUE					
-_bhvrl_pschctv_cd			F10-F19 - Mental and behavioral disorders due to psychoactive substance use (F10-F19)											TRUE	FALSE					
-_bhvrl_pschctv			F10-F19 - Mental and behavioral disorders due to psychoactive substance use (F10-F19)											FALSE	TRUE					
-_schzphrn_schztpl_cd			F20-F29 - Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders (F20-F29)											TRUE	FALSE					
-_schzphrn_schztpl			F20-F29 - Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders (F20-F29)											FALSE	TRUE					
-_afctv_ptnts_cd			F30-F39 - Mood [affective] disorders (F30-F39)											TRUE	FALSE					
-_afctv_ptnts			F30-F39 - Mood [affective] disorders (F30-F39)											FALSE	TRUE					
-_strs_rltd_cd			F40-F48 - Anxiety, dissociative, stress-related, somatoform and other nonpsychotic mental disorders (F40-F48)											TRUE	FALSE					
-_strs_rltd			F40-F48 - Anxiety, dissociative, stress-related, somatoform and other nonpsychotic mental disorders (F40-F48)											FALSE	TRUE					
-_phslgcl_dstrbncs_cd			F50-F59 - Behavioral syndromes associated with physiological disturbances and physical factors (F50-F59)											TRUE	FALSE					
-_phslgcl_dstrbncs			F50-F59 - Behavioral syndromes associated with physiological disturbances and physical factors (F50-F59)											FALSE	TRUE					
-_g_g___ptnts_cd			G00-G99 - Diseases of the nervous system (G00-G99)											TRUE	FALSE					
-_g_g___ptnts			G00-G99 - Diseases of the nervous system (G00-G99)											FALSE	TRUE					
-_dsrdrs_ptnts_cd			H30-H36 - Disorders of choroid and retina (H30-H36)											TRUE	FALSE					
-_dsrdrs_ptnts			H30-H36 - Disorders of choroid and retina (H30-H36)											FALSE	TRUE					
-_glcm_ptnts_cd			H40-H42 - Glaucoma (H40-H42)											TRUE	FALSE					
-_glcm_ptnts			H40-H42 - Glaucoma (H40-H42)											FALSE	TRUE					
-_dsrdrs_ptnts_cd			H90-H94 - Other disorders of ear (H90-H94)											TRUE	FALSE					
-_dsrdrs_ptnts			H90-H94 - Other disorders of ear (H90-H94)											FALSE	TRUE					
-_crcltr_ptnts_cd			I00-I99 - Diseases of the circulatory system (I00-I99)											TRUE	FALSE					
-_crcltr_ptnts			I00-I99 - Diseases of the circulatory system (I00-I99)											FALSE	TRUE					
-_pnmn_ptnts_cd			J09-J18 - Influenza and pneumonia (J09-J18)											TRUE	FALSE					
-_pnmn_ptnts			J09-J18 - Influenza and pneumonia (J09-J18)											FALSE	TRUE					
-_rsprtr_ptnts_cd			J40-J47 - Chronic lower respiratory diseases (J40-J47)											TRUE	FALSE					
-_rsprtr_ptnts			J40-J47 - Chronic lower respiratory diseases (J40-J47)											FALSE	TRUE					
-_extrnl_ptnts_cd			J60-J70 - Lung diseases due to external agents (J60-J70)											TRUE	FALSE					
-_extrnl_ptnts			J60-J70 - Lung diseases due to external agents (J60-J70)											FALSE	TRUE					
-_prncpl_intrstm_cd			J80-J84 - Other respiratory diseases principally affecting the interstitium (J80-J84)											TRUE	FALSE					
-_prncpl_intrstm			J80-J84 - Other respiratory diseases principally affecting the interstitium (J80-J84)											FALSE	TRUE					
-_sprtv_rsprtr_cd			J85-J86 - Suppurative and necrotic conditions of the lower respiratory tract (J85-J86)											TRUE	FALSE					
-_sprtv_rsprtr			J85-J86 - Suppurative and necrotic conditions of the lower respiratory tract (J85-J86)											FALSE	TRUE					
-_rsprtr_ptnts_cd			J96-J99 - Other diseases of the respiratory system (J96-J99)											TRUE	FALSE					
-_rsprtr_ptnts			J96-J99 - Other diseases of the respiratory system (J96-J99)											FALSE	TRUE					
-_esphgs_ptnts_cd			K20-K31 - Diseases of esophagus, stomach and duodenum (K20-K31)											TRUE	FALSE					
-_esphgs_ptnts			K20-K31 - Diseases of esophagus, stomach and duodenum (K20-K31)											FALSE	TRUE					
-_nnfctv_ptnts_cd			K50-K52 - Noninfective enteritis and colitis (K50-K52)											TRUE	FALSE					
-_nnfctv_ptnts			K50-K52 - Noninfective enteritis and colitis (K50-K52)											FALSE	TRUE					
-_intstns_ptnts_cd			K55-K64 - Other diseases of intestines (K55-K64)											TRUE	FALSE					
-_intstns_ptnts			K55-K64 - Other diseases of intestines (K55-K64)											FALSE	TRUE					
-_rtrprtnm_cd			K65-K68 - Diseases of peritoneum and retroperitoneum (K65-K68)											TRUE	FALSE					
-_rtrprtnm			K65-K68 - Diseases of peritoneum and retroperitoneum (K65-K68)											FALSE	TRUE					
-_dss_ptnts_cd			K70-K77 - Diseases of liver (K70-K77)											TRUE	FALSE					
-_dss_ptnts			K70-K77 - Diseases of liver (K70-K77)											FALSE	TRUE					
-_dgstv_ptnts_cd			K90-K95 - Other diseases of the digestive system (K90-K95)											TRUE	FALSE					
-_dgstv_ptnts			K90-K95 - Other diseases of the digestive system (K90-K95)											FALSE	TRUE					
-_sbctns_ptnts_cd			L80-L99 - Other disorders of the skin and subcutaneous tissue (L80-L99)											TRUE	FALSE					
-_sbctns_ptnts			L80-L99 - Other disorders of the skin and subcutaneous tissue (L80-L99)											FALSE	TRUE					
-_infcts_arthrpths_cd			M00-M02 - Infectious arthropathies (M00-M02)											TRUE	FALSE					
-_infcts_arthrpths			M00-M02 - Infectious arthropathies (M00-M02)											FALSE	TRUE					
-_plrthrpths_cd			M05-M14 - Inflammatory polyarthropathies (M05-M14)											TRUE	FALSE					
-_plrthrpths			M05-M14 - Inflammatory polyarthropathies (M05-M14)											FALSE	TRUE					
-_ostrthrts_ptnts_cd			M15-M19 - Osteoarthritis (M15-M19)											TRUE	FALSE					
-_ostrthrts_ptnts			M15-M19 - Osteoarthritis (M15-M19)											FALSE	TRUE					
-_cnctv_ptnts_cd			M30-M36 - Systemic connective tissue disorders (M30-M36)											TRUE	FALSE					
-_cnctv_ptnts			M30-M36 - Systemic connective tissue disorders (M30-M36)											FALSE	TRUE					
-_spndlpths_cd			M45-M49 - Spondylopathies (M45-M49)											TRUE	FALSE					
-_spndlpths			M45-M49 - Spondylopathies (M45-M49)											FALSE	TRUE					
-_strctr_ptnts_cd			M80-M85 - Disorders of bone density and structure (M80-M85)											TRUE	FALSE					
-_strctr_ptnts			M80-M85 - Disorders of bone density and structure (M80-M85)											FALSE	TRUE					
-_ostpths_ptnts_cd			M86-M90 - Other osteopathies (M86-M90)											TRUE	FALSE					
-_ostpths_ptnts			M86-M90 - Other osteopathies (M86-M90)											FALSE	TRUE					
-_glmrlr_ptnts_cd			N00-N08 - Glomerular diseases (N00-N08)											TRUE	FALSE					
-_glmrlr_ptnts			N00-N08 - Glomerular diseases (N00-N08)											FALSE	TRUE					
-_n_n__ptnts_cd			N17-N19 - Acute kidney failure and chronic kidney disease (N17-N19)											TRUE	FALSE					
-_n_n__ptnts			N17-N19 - Acute kidney failure and chronic kidney disease (N17-N19)											FALSE	TRUE					
-_dsrdrs_ptnts_cd			N25-N29 - Other disorders of kidney and ureter (N25-N29)											TRUE	FALSE					
-_dsrdrs_ptnts			N25-N29 - Other disorders of kidney and ureter (N25-N29)											FALSE	TRUE					
-_prdmntl_ptnts_cd			O20-O29 - Other maternal disorders predominantly related to pregnancy (O20-O29)											TRUE	FALSE					
-_prdmntl_ptnts			O20-O29 - Other maternal disorders predominantly related to pregnancy (O20-O29)											FALSE	TRUE					
-_cmplctns_ptnts_cd			O60-O77 - Complications of labor and delivery (O60-O77)											TRUE	FALSE					
-_cmplctns_ptnts			O60-O77 - Complications of labor and delivery (O60-O77)											FALSE	TRUE					
-_cmplctns_prdmntl_cd			O85-O92 - Complications predominantly related to the puerperium (O85-O92)											TRUE	FALSE					
-_cmplctns_prdmntl			O85-O92 - Complications predominantly related to the puerperium (O85-O92)											FALSE	TRUE					
-_p_p__ptnts_cd			P10-P15 - Birth trauma (P10-P15)											TRUE	FALSE					
-_p_p__ptnts			P10-P15 - Birth trauma (P10-P15)											FALSE	TRUE					
-_cngntl_mlfrmtns_cd			Q00-Q07 - Congenital malformations of the nervous system (Q00-Q07)											TRUE	FALSE					
-_cngntl_mlfrmtns			Q00-Q07 - Congenital malformations of the nervous system (Q00-Q07)											FALSE	TRUE					
-_crcltr_rsprtr_cd			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)											TRUE	FALSE					
-_crcltr_rsprtr			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)											FALSE	TRUE					
-_dgstv_ptnts_cd			R10-R19 - Symptoms and signs involving the digestive system and abdomen (R10-R19)											TRUE	FALSE					
-_dgstv_ptnts			R10-R19 - Symptoms and signs involving the digestive system and abdomen (R10-R19)											FALSE	TRUE					
-_msclskltl_cd			R25-R29 - Symptoms and signs involving the nervous and musculoskeletal systems (R25-R29)											TRUE	FALSE					
-_msclskltl			R25-R29 - Symptoms and signs involving the nervous and musculoskeletal systems (R25-R29)											FALSE	TRUE					
-_gntrnr_ptnts_cd			R30-R39 - Symptoms and signs involving the genitourinary system (R30-R39)											TRUE	FALSE					
-_gntrnr_ptnts			R30-R39 - Symptoms and signs involving the genitourinary system (R30-R39)											FALSE	TRUE					
-_cgntn_prcptn_cd			R40-R46 - Symptoms and signs involving cognition, perception, emotional state and behavior (R40-R46)											TRUE	FALSE					
-_cgntn_prcptn			R40-R46 - Symptoms and signs involving cognition, perception, emotional state and behavior (R40-R46)											FALSE	TRUE					
-_invlvng_ptnts_cd			R47-R49 - Symptoms and signs involving speech and voice (R47-R49)											TRUE	FALSE					
-_invlvng_ptnts			R47-R49 - Symptoms and signs involving speech and voice (R47-R49)											FALSE	TRUE					
-_smptms_ptnts_cd			R50-R69 - General symptoms and signs (R50-R69)											TRUE	FALSE					
-_smptms_ptnts			R50-R69 - General symptoms and signs (R50-R69)											FALSE	TRUE					
-_exmntn_ptnts_cd			R70-R79 - Abnormal findings on examination of blood, without diagnosis (R70-R79)											TRUE	FALSE					
-_exmntn_ptnts			R70-R79 - Abnormal findings on examination of blood, without diagnosis (R70-R79)											FALSE	TRUE					
-_abnrml_ptnts_cd			R97-R97 - Abnormal tumor markers (R97)											TRUE	FALSE					
-_abnrml_ptnts			R97-R97 - Abnormal tumor markers (R97)											FALSE	TRUE					
-_cnsqncs_ptnts_cd			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											TRUE	FALSE					
-_cnsqncs_ptnts_dx			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											FALSE	TRUE					
-_cnsqncs_ptnts			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											FALSE	TRUE					
-_stmblng_ptnts_cd			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											TRUE	FALSE					
-_stmblng_ptnts_dx			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											FALSE	TRUE					
-_stmblng_ptnts			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											FALSE	TRUE					
-_encntrs_ptnts_cd			Z40-Z53 - Encounters for other specific health care (Z40-Z53)											TRUE	FALSE					
-_encntrs_ptnts			Z40-Z53 - Encounters for other specific health care (Z40-Z53)											FALSE	TRUE					
-_scnmc_crcmstncs_cd			Z55-Z65 - Persons with potential health hazards related to socioeconomic and psychosocial circumstances (Z55-Z65)											TRUE	FALSE					
-_scnmc_crcmstncs			Z55-Z65 - Persons with potential health hazards related to socioeconomic and psychosocial circumstances (Z55-Z65)											FALSE	TRUE					
-_encntrng_crcmstncs_cd			Z69-Z76 - Persons encountering health services in other circumstances (Z69-Z76)											TRUE	FALSE					
-_encntrng_crcmstncs			Z69-Z76 - Persons encountering health services in other circumstances (Z69-Z76)											FALSE	TRUE					
-_cndtns_inflncng_cd			Z77-Z99 - Persons with potential health hazards related to family and personal history and certain conditions influencing health status (Z77-Z99)											TRUE	FALSE					
-_cndtns_inflncng			Z77-Z99 - Persons with potential health hazards related to family and personal history and certain conditions influencing health status (Z77-Z99)											FALSE	TRUE					
+durablename	nval_num	dispname	name	comment_persistant	rename	c_patdata	c_vitals	c_death	c_multicode	c_main_naaccr_vars	c_naaccr	c_tte	c_istte	c_coderange	c_coderange_info	c_kcdiag	c_kcfact	c_180808	c_sortlabels	c_override_keep	c_dupes
+sex_cd		Sex	sex_cd			TRUE															
+language_cd		Language	language_cd			TRUE													TRUE		
+race_cd		Race	race_cd			TRUE													TRUE		
+age_at_visit_days		Patient age (days)	age_at_visit_days			TRUE															
+age_at_death_days		Patient age at death (days)	age_at_death_days			TRUE															
+_vntltrs_brthng_tf			1014859 - Ventilation assist and management, initiation of pressure or volume preset ventilators for assisted or controlled breathing																		
+_Sts__ptnts_cd			1760 Vital Status	Vital status according to NAACCR, 0 = deceased, 1 = alive		TRUE		TRUE													
+_Extrcrprl_Prcdr_tf			5A - Extracorporeal or Systemic Assistance and Performance @ Physiological Systems (Procedure)																		
+_Src__ptnts_cd			Admit Source		v_admitsrc																
+_Crnvrs_unspcfd_tf			B34.2 - Coronavirus infection, unspecified																		
+_Crnvrs_elswhr_tf			B97.2 - Coronavirus as the cause of diseases classified elsewhere																		
+_Indx__ptnts_mn	1		Body Mass Index				TRUE														
+_fcts_ptnts_cd			COVID-19 RFV BASE	Not sure if RFV means suspected COVID-19 or confirmed	v_covid_rfv																
+_Prsr__ptnts_mn	1		Diastolic Blood Pressure		v_diastolic		TRUE														
+_Dspstn__ptnts_cd			Discharge Disposition	DischDisp:E = deceased (expired)	v_dischdsp				TRUE											TRUE	
+_Sts__ptnts_cd			Discharge Status	DischStat:EX = deceased (expired)	v_dischst				TRUE											TRUE	
+_ACCDNTL_ptnts_tf			E880-E888.9 - ACCIDENTAL FALLS																		
+_undtrmnd_acdntl_tf			E987 - Falling from high place, undetermined whether accidentally or purposely inflicted																		
+_Ethnct__ptnts_cd			Ethnicity			TRUE															
+_Fncl_ptnts_cd			Financial Class																		
+_Insttn__ptnts_cd			Institution																		
+_rsprtr_ptnts_tf			J00-J99 - Diseases of the respiratory system (J00-J99)																		
+_Lng__ptnts_cd			Language			TRUE															
+_Strtn_ptnts_mn	1		O2 Saturation (UHS Only)		v_o2sat		TRUE														
+_Pls__ptnts_mn	1		Pulse				TRUE														
+_crcltr_rsprtr_tf			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)	Might need to break specific codes out of this one																	
+_Rsprtn_ptnts_mn	1		Respiration Rate				TRUE														
+_Scnmc_ptnts_cd	1		Socioeconomic Status	Complex variable		TRUE															
+_Prsr__ptnts_mn	1		Systolic Blood Pressure		v_systolic		TRUE														
+_Tmprtr_ptnts_mn	1		Temperature (F)				TRUE														
+_Usg__ptnts_cd	1		Tobacco Usage	Does this exclude non-use codes?			TRUE														
+_Pdstrn_cnvnc_tf			V00 - Pedestrian conveyance accident																		
+_UTMd___ptnts_cd			Visit Reason (UTMed)		v_visreason																
+_stmblng_ptnts_tf			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)																		
+_obsrvtn_cndtns_tf			Z03.8 - Encounter for observation for other suspected diseases and conditions ruled out	Does this imply COVID-19 negative or positive?																	
+_dss__ptnts_tf			Z11.59 - Encounter for screening for other viral diseases																		
+_spctd_cmncbl_tf			Z20.828 - Contact with and (suspected) exposure to other viral communicable diseases																		
+_Dpndnc_rsprtr_tf			Z99.1 - Dependence on respirator																		
+_Dprtmnt__ptnts_cd			Clinical Service Department		v_department				TRUE												
+_Encntr_ptnts_cd			Encounter Type		v_enctype				TRUE												
+_Plvs_ptnts_tf			Kidney and Renal Pelvis		n_seer_kcancer					TRUE	TRUE						TRUE	TRUE			
+_mlgnt_ptnts_tf		KC ICD10, i2b2	189.0 - Malignant neoplasm of kidney, except pelvis		e_kc_i9					FALSE	FALSE	TRUE	TRUE			TRUE	TRUE	TRUE			
+_mlgnt_ptnts_tf		KC ICD9, i2b2	C64 - Malignant neoplasm of kidney, except renal pelvis		e_kc_i10					FALSE	FALSE	TRUE	TRUE			TRUE	TRUE	TRUE			
+_intstnl_infcts_cd			A00-A09 - Intestinal infectious diseases (A00-A09)											TRUE	FALSE						
+_intstnl_infcts			A00-A09 - Intestinal infectious diseases (A00-A09)											FALSE	TRUE						
+_bctrl_ptnts_cd			A30-A49 - Other bacterial diseases (A30-A49)											TRUE	FALSE						
+_bctrl_ptnts			A30-A49 - Other bacterial diseases (A30-A49)											FALSE	TRUE						
+_infcts_ptnts_cd			B95-B97 - Bacterial and viral infectious agents (B95-B97)											TRUE	FALSE						
+_infcts_ptnts			B95-B97 - Bacterial and viral infectious agents (B95-B97)											FALSE	TRUE						
+_prdmntl_trnsmsn_cd			A50-A64 - Infections with a predominantly sexual mode of transmission (A50-A64)											TRUE	FALSE						
+_prdmntl_trnsmsn			A50-A64 - Infections with a predominantly sexual mode of transmission (A50-A64)											FALSE	TRUE						
+_sprchtl_ptnts_cd			A65-A69 - Other spirochetal diseases (A65-A69)											TRUE	FALSE						
+_sprchtl_ptnts			A65-A69 - Other spirochetal diseases (A65-A69)											FALSE	TRUE						
+_infctns_chrctrzd_cd			B00-B09 - Viral infections characterized by skin and mucous membrane lesions (B00-B09)											TRUE	FALSE						
+_infctns_chrctrzd			B00-B09 - Viral infections characterized by skin and mucous membrane lesions (B00-B09)											FALSE	TRUE						
+_dss_ptnts_cd			B25-B34 - Other viral diseases (B25-B34)											TRUE	FALSE						
+_dss_ptnts			B25-B34 - Other viral diseases (B25-B34)											FALSE	TRUE						
+_b_b__ptnts_cd			B35-B49 - Mycoses (B35-B49)											TRUE	FALSE						
+_b_b__ptnts			B35-B49 - Mycoses (B35-B49)											FALSE	TRUE						
+_prtzl_ptnts_cd			B50-B64 - Protozoal diseases (B50-B64)											TRUE	FALSE						
+_prtzl_ptnts			B50-B64 - Protozoal diseases (B50-B64)											FALSE	TRUE						
+_hlmnths_ptnts_cd			B65-B83 - Helminthiases (B65-B83)											TRUE	FALSE						
+_hlmnths_ptnts			B65-B83 - Helminthiases (B65-B83)											FALSE	TRUE						
+_nplsms_ptnts_cd			C00-D49 - Neoplasms (C00-D49)											TRUE	FALSE						
+_nplsms_ptnts_dx			C00-D49 - Neoplasms (C00-D49)											FALSE	TRUE						
+_nplsms_ptnts			C00-D49 - Neoplasms (C00-D49)											FALSE	TRUE						
+_bld_frmng_ptnts_cd			D50-D89 - Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism (D50-D89)											TRUE	FALSE						
+_bld_frmng_ptnts			D50-D89 - Diseases of the blood and blood-forming organs and certain disorders involving the immune mechanism (D50-D89)											FALSE	TRUE						
+_endcrn_ntrtnl_cd			E00-E89 - Endocrine, nutritional and metabolic diseases (E00-E89)											TRUE	FALSE						
+_endcrn_ntrtnl			E00-E89 - Endocrine, nutritional and metabolic diseases (E00-E89)											FALSE	TRUE						
+_phslgcl_cndtns_cd			F01-F09 - Mental disorders due to known physiological conditions (F01-F09)											TRUE	FALSE						
+_phslgcl_cndtns			F01-F09 - Mental disorders due to known physiological conditions (F01-F09)											FALSE	TRUE						
+_bhvrl_pschctv_cd			F10-F19 - Mental and behavioral disorders due to psychoactive substance use (F10-F19)											TRUE	FALSE						
+_bhvrl_pschctv			F10-F19 - Mental and behavioral disorders due to psychoactive substance use (F10-F19)											FALSE	TRUE						
+_schzphrn_schztpl_cd			F20-F29 - Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders (F20-F29)											TRUE	FALSE						
+_schzphrn_schztpl			F20-F29 - Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders (F20-F29)											FALSE	TRUE						
+_afctv_ptnts_cd			F30-F39 - Mood [affective] disorders (F30-F39)											TRUE	FALSE						
+_afctv_ptnts			F30-F39 - Mood [affective] disorders (F30-F39)											FALSE	TRUE						
+_strs_rltd_cd			F40-F48 - Anxiety, dissociative, stress-related, somatoform and other nonpsychotic mental disorders (F40-F48)											TRUE	FALSE						
+_strs_rltd			F40-F48 - Anxiety, dissociative, stress-related, somatoform and other nonpsychotic mental disorders (F40-F48)											FALSE	TRUE						
+_phslgcl_dstrbncs_cd			F50-F59 - Behavioral syndromes associated with physiological disturbances and physical factors (F50-F59)											TRUE	FALSE						
+_phslgcl_dstrbncs			F50-F59 - Behavioral syndromes associated with physiological disturbances and physical factors (F50-F59)											FALSE	TRUE						
+_g_g___ptnts_cd			G00-G99 - Diseases of the nervous system (G00-G99)											TRUE	FALSE						
+_g_g___ptnts			G00-G99 - Diseases of the nervous system (G00-G99)											FALSE	TRUE						
+_dsrdrs_ptnts_cd			H30-H36 - Disorders of choroid and retina (H30-H36)											TRUE	FALSE						
+_dsrdrs_ptnts			H30-H36 - Disorders of choroid and retina (H30-H36)											FALSE	TRUE						
+_glcm_ptnts_cd			H40-H42 - Glaucoma (H40-H42)											TRUE	FALSE						
+_glcm_ptnts			H40-H42 - Glaucoma (H40-H42)											FALSE	TRUE						
+_dsrdrs_ptnts_cd			H90-H94 - Other disorders of ear (H90-H94)											TRUE	FALSE						
+_dsrdrs_ptnts			H90-H94 - Other disorders of ear (H90-H94)											FALSE	TRUE						
+_crcltr_ptnts_cd			I00-I99 - Diseases of the circulatory system (I00-I99)											TRUE	FALSE						
+_crcltr_ptnts			I00-I99 - Diseases of the circulatory system (I00-I99)											FALSE	TRUE						
+_pnmn_ptnts_cd			J09-J18 - Influenza and pneumonia (J09-J18)											TRUE	FALSE						
+_pnmn_ptnts			J09-J18 - Influenza and pneumonia (J09-J18)											FALSE	TRUE						
+_rsprtr_ptnts_cd			J40-J47 - Chronic lower respiratory diseases (J40-J47)											TRUE	FALSE						
+_rsprtr_ptnts			J40-J47 - Chronic lower respiratory diseases (J40-J47)											FALSE	TRUE						
+_extrnl_ptnts_cd			J60-J70 - Lung diseases due to external agents (J60-J70)											TRUE	FALSE						
+_extrnl_ptnts			J60-J70 - Lung diseases due to external agents (J60-J70)											FALSE	TRUE						
+_prncpl_intrstm_cd			J80-J84 - Other respiratory diseases principally affecting the interstitium (J80-J84)											TRUE	FALSE						
+_prncpl_intrstm			J80-J84 - Other respiratory diseases principally affecting the interstitium (J80-J84)											FALSE	TRUE						
+_sprtv_rsprtr_cd			J85-J86 - Suppurative and necrotic conditions of the lower respiratory tract (J85-J86)											TRUE	FALSE						
+_sprtv_rsprtr			J85-J86 - Suppurative and necrotic conditions of the lower respiratory tract (J85-J86)											FALSE	TRUE						
+_rsprtr_ptnts_cd			J96-J99 - Other diseases of the respiratory system (J96-J99)											TRUE	FALSE						
+_rsprtr_ptnts			J96-J99 - Other diseases of the respiratory system (J96-J99)											FALSE	TRUE						
+_esphgs_ptnts_cd			K20-K31 - Diseases of esophagus, stomach and duodenum (K20-K31)											TRUE	FALSE						
+_esphgs_ptnts			K20-K31 - Diseases of esophagus, stomach and duodenum (K20-K31)											FALSE	TRUE						
+_nnfctv_ptnts_cd			K50-K52 - Noninfective enteritis and colitis (K50-K52)											TRUE	FALSE						
+_nnfctv_ptnts			K50-K52 - Noninfective enteritis and colitis (K50-K52)											FALSE	TRUE						
+_intstns_ptnts_cd			K55-K64 - Other diseases of intestines (K55-K64)											TRUE	FALSE						
+_intstns_ptnts			K55-K64 - Other diseases of intestines (K55-K64)											FALSE	TRUE						
+_rtrprtnm_cd			K65-K68 - Diseases of peritoneum and retroperitoneum (K65-K68)											TRUE	FALSE						
+_rtrprtnm			K65-K68 - Diseases of peritoneum and retroperitoneum (K65-K68)											FALSE	TRUE						
+_dss_ptnts_cd			K70-K77 - Diseases of liver (K70-K77)											TRUE	FALSE						
+_dss_ptnts			K70-K77 - Diseases of liver (K70-K77)											FALSE	TRUE						
+_dgstv_ptnts_cd			K90-K95 - Other diseases of the digestive system (K90-K95)											TRUE	FALSE						
+_dgstv_ptnts			K90-K95 - Other diseases of the digestive system (K90-K95)											FALSE	TRUE						
+_sbctns_ptnts_cd			L80-L99 - Other disorders of the skin and subcutaneous tissue (L80-L99)											TRUE	FALSE						
+_sbctns_ptnts			L80-L99 - Other disorders of the skin and subcutaneous tissue (L80-L99)											FALSE	TRUE						
+_infcts_arthrpths_cd			M00-M02 - Infectious arthropathies (M00-M02)											TRUE	FALSE						
+_infcts_arthrpths			M00-M02 - Infectious arthropathies (M00-M02)											FALSE	TRUE						
+_plrthrpths_cd			M05-M14 - Inflammatory polyarthropathies (M05-M14)											TRUE	FALSE						
+_plrthrpths			M05-M14 - Inflammatory polyarthropathies (M05-M14)											FALSE	TRUE						
+_ostrthrts_ptnts_cd			M15-M19 - Osteoarthritis (M15-M19)											TRUE	FALSE						
+_ostrthrts_ptnts			M15-M19 - Osteoarthritis (M15-M19)											FALSE	TRUE						
+_cnctv_ptnts_cd			M30-M36 - Systemic connective tissue disorders (M30-M36)											TRUE	FALSE						
+_cnctv_ptnts			M30-M36 - Systemic connective tissue disorders (M30-M36)											FALSE	TRUE						
+_spndlpths_cd			M45-M49 - Spondylopathies (M45-M49)											TRUE	FALSE						
+_spndlpths			M45-M49 - Spondylopathies (M45-M49)											FALSE	TRUE						
+_strctr_ptnts_cd			M80-M85 - Disorders of bone density and structure (M80-M85)											TRUE	FALSE						
+_strctr_ptnts			M80-M85 - Disorders of bone density and structure (M80-M85)											FALSE	TRUE						
+_ostpths_ptnts_cd			M86-M90 - Other osteopathies (M86-M90)											TRUE	FALSE						
+_ostpths_ptnts			M86-M90 - Other osteopathies (M86-M90)											FALSE	TRUE						
+_glmrlr_ptnts_cd			N00-N08 - Glomerular diseases (N00-N08)											TRUE	FALSE						
+_glmrlr_ptnts			N00-N08 - Glomerular diseases (N00-N08)											FALSE	TRUE						
+_n_n__ptnts_cd			N17-N19 - Acute kidney failure and chronic kidney disease (N17-N19)											TRUE	FALSE						
+_n_n__ptnts			N17-N19 - Acute kidney failure and chronic kidney disease (N17-N19)											FALSE	TRUE						
+_dsrdrs_ptnts_cd			N25-N29 - Other disorders of kidney and ureter (N25-N29)											TRUE	FALSE						
+_dsrdrs_ptnts			N25-N29 - Other disorders of kidney and ureter (N25-N29)											FALSE	TRUE						
+_prdmntl_ptnts_cd			O20-O29 - Other maternal disorders predominantly related to pregnancy (O20-O29)											TRUE	FALSE						
+_prdmntl_ptnts			O20-O29 - Other maternal disorders predominantly related to pregnancy (O20-O29)											FALSE	TRUE						
+_cmplctns_ptnts_cd			O60-O77 - Complications of labor and delivery (O60-O77)											TRUE	FALSE						
+_cmplctns_ptnts			O60-O77 - Complications of labor and delivery (O60-O77)											FALSE	TRUE						
+_cmplctns_prdmntl_cd			O85-O92 - Complications predominantly related to the puerperium (O85-O92)											TRUE	FALSE						
+_cmplctns_prdmntl			O85-O92 - Complications predominantly related to the puerperium (O85-O92)											FALSE	TRUE						
+_p_p__ptnts_cd			P10-P15 - Birth trauma (P10-P15)											TRUE	FALSE						
+_p_p__ptnts			P10-P15 - Birth trauma (P10-P15)											FALSE	TRUE						
+_cngntl_mlfrmtns_cd			Q00-Q07 - Congenital malformations of the nervous system (Q00-Q07)											TRUE	FALSE						
+_cngntl_mlfrmtns			Q00-Q07 - Congenital malformations of the nervous system (Q00-Q07)											FALSE	TRUE						
+_crcltr_rsprtr_cd			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)											TRUE	FALSE						
+_crcltr_rsprtr			R00-R09 - Symptoms and signs involving the circulatory and respiratory systems (R00-R09)											FALSE	TRUE						
+_dgstv_ptnts_cd			R10-R19 - Symptoms and signs involving the digestive system and abdomen (R10-R19)											TRUE	FALSE						
+_dgstv_ptnts			R10-R19 - Symptoms and signs involving the digestive system and abdomen (R10-R19)											FALSE	TRUE						
+_msclskltl_cd			R25-R29 - Symptoms and signs involving the nervous and musculoskeletal systems (R25-R29)											TRUE	FALSE						
+_msclskltl			R25-R29 - Symptoms and signs involving the nervous and musculoskeletal systems (R25-R29)											FALSE	TRUE						
+_gntrnr_ptnts_cd			R30-R39 - Symptoms and signs involving the genitourinary system (R30-R39)											TRUE	FALSE						
+_gntrnr_ptnts			R30-R39 - Symptoms and signs involving the genitourinary system (R30-R39)											FALSE	TRUE						
+_cgntn_prcptn_cd			R40-R46 - Symptoms and signs involving cognition, perception, emotional state and behavior (R40-R46)											TRUE	FALSE						
+_cgntn_prcptn			R40-R46 - Symptoms and signs involving cognition, perception, emotional state and behavior (R40-R46)											FALSE	TRUE						
+_invlvng_ptnts_cd			R47-R49 - Symptoms and signs involving speech and voice (R47-R49)											TRUE	FALSE						
+_invlvng_ptnts			R47-R49 - Symptoms and signs involving speech and voice (R47-R49)											FALSE	TRUE						
+_smptms_ptnts_cd			R50-R69 - General symptoms and signs (R50-R69)											TRUE	FALSE						
+_smptms_ptnts			R50-R69 - General symptoms and signs (R50-R69)											FALSE	TRUE						
+_exmntn_ptnts_cd			R70-R79 - Abnormal findings on examination of blood, without diagnosis (R70-R79)											TRUE	FALSE						
+_exmntn_ptnts			R70-R79 - Abnormal findings on examination of blood, without diagnosis (R70-R79)											FALSE	TRUE						
+_abnrml_ptnts_cd			R97-R97 - Abnormal tumor markers (R97)											TRUE	FALSE						
+_abnrml_ptnts			R97-R97 - Abnormal tumor markers (R97)											FALSE	TRUE						
+_cnsqncs_ptnts_cd			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											TRUE	FALSE						
+_cnsqncs_ptnts_dx			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											FALSE	TRUE						
+_cnsqncs_ptnts			S00-T88 - Injury, poisoning and certain other consequences of external causes (S00-T88)											FALSE	TRUE						
+_stmblng_ptnts_cd			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											TRUE	FALSE						
+_stmblng_ptnts_dx			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											FALSE	TRUE						
+_stmblng_ptnts			W00-W19 - Slipping, tripping, stumbling and falls (W00-W19)											FALSE	TRUE						
+_encntrs_ptnts_cd			Z40-Z53 - Encounters for other specific health care (Z40-Z53)											TRUE	FALSE						
+_encntrs_ptnts			Z40-Z53 - Encounters for other specific health care (Z40-Z53)											FALSE	TRUE						
+_scnmc_crcmstncs_cd			Z55-Z65 - Persons with potential health hazards related to socioeconomic and psychosocial circumstances (Z55-Z65)											TRUE	FALSE						
+_scnmc_crcmstncs			Z55-Z65 - Persons with potential health hazards related to socioeconomic and psychosocial circumstances (Z55-Z65)											FALSE	TRUE						
+_encntrng_crcmstncs_cd			Z69-Z76 - Persons encountering health services in other circumstances (Z69-Z76)											TRUE	FALSE						
+_encntrng_crcmstncs			Z69-Z76 - Persons encountering health services in other circumstances (Z69-Z76)											FALSE	TRUE						
+_cndtns_inflncng_cd			Z77-Z99 - Persons with potential health hazards related to family and personal history and certain conditions influencing health status (Z77-Z99)											TRUE	FALSE						
+_cndtns_inflncng			Z77-Z99 - Persons with potential health hazards related to family and personal history and certain conditions influencing health status (Z77-Z99)											FALSE	TRUE						
+_fcts_ptnts_cd			C649		n_kcancer												TRUE				
+_prcdrs_ptnts_cd			1008062 - Surgical Procedures on the Kidney	Used to extract codes of interest	z_e_surg																
