@@ -57,7 +57,28 @@ left_join_merge <- function(xx,yy,by=c('durablename','name')
     message('The following columns were merged into existing ones: '
             , paste(merged,collapse=', '))};
   out;
+};
+
+# returns the number of disjoint matches found in each element of vector xx
+mostmatches <- function(xx,pattern='TRUE'){
+  sapply(gregexpr(pattern,xx),function(yy) sum(yy>0))};
+
+# Take a vector with possibly missing or varying values, and standardize to one
+# of several pre-defined values in order of priority. So this despite the name,
+# preserved for backward compatibility, this function operates on an ordinary 
+# vector in order to, e.g., choose which value should represent that group
+adjudicate_levels <- function(xx,levels,...,DEFAULT=tail(na.omit(xx),n=1)
+                              ,MISSING=NA){
+  xx <- unique(na.omit(xx));
+  # If there are no values, return the default value
+  if(length(xx)==0) return(MISSING);
+  # otherwise, step through the levs list of values and return the first matched
+  out <- xx[na.omit(match(unlist(levels),xx))[1]];
+  if(!is.na(out)) return(out);
+  if(is(DEFAULT,'language')||is(DEFAULT,'function')) return(DEFAULT(xx)) else {
+    return(DEFAULT)};
 }
+
 
 #' A function to re-order and/or rename the levels of a factor or 
 #' vector with optional cleanup.
@@ -154,4 +175,27 @@ factorclean <- function(xx,lookuptable,reorder=T,unmatched=1
   out <- factor(xx,levels=lookupfinal$from);
   levels(out) <- lookupfinal$to;
   if(droplevels) droplevels(out) else out;
+};
+
+update_persist <- function(varname,...,c_groups=c(),persist='data/persistent_dict.tsv'
+                           ,varmap='varmap.csv',colname='colname'
+                           ,durablename='durablename',name='name'){
+  values <- list(...); values <- values[unique(names(values))];
+  # try to read 'name' for that varname from varmap
+  # try to extract info for that varname from persistent_dict
+  # The character elements of c_groups, if any, are given a 'c_' prefix if missing 
+  c_groups <- ifelse(grepl('^c_',c_groups),c_groups,paste0('c_',c_groups));
+  for(ii in c_groups) values[[ii]] <- TRUE;
+  # (to set FALSE or NA, put it into ...)
+  # override existing info with 'values' except 'name' and 'durablename'
+  # 'durablename' is derived automatically if not found in persistent_dict or 
+  # supplied by user (in that order of precedence)
+  # name has the following precedence: varmap > persistent_dict >
+  # name in 'values' if any > user prompted for name if interactive session
+  # otherwise, hash
+  # if already exists in persistent_dict, that value is removed and new one
+  # inserted in its place (might need to do bind_rows twice) otherwise appended
+  # written out to file again.
+  # maybe some kind of confirmatory output
+  # maybe optionally update the live dictionary
 }
