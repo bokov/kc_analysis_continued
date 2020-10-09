@@ -165,11 +165,149 @@ dat01$a_e_neph_tf <- grepl(.re_neph,dat01$z_e_surg);
 dat01[,a_n_dm := apply(.SD,1,function(xx) any(grepl('250[0-9]{2}$',xx)))
       ,.SDcols = setdiff(v(c_naaccr_comorb),v(c_info))];
 
-# kcpatients subsets ----
-#' Find the patients which had kidney cancer
+
+
+#' Find the patients which had kidney cancer according to EMR and to NAACCR
 # kcpatients.emr <- subset(dat01,e_kc_i10|e_kc_i9)$patient_num %>% unique;
 # the above is equivalent to the below, but less efficient
-dat01[,z_haskc := any(e_kc_i10|e_kc_i9,na.rm = TRUE),by=patient_num];
+# state variables ----
+dat01[
+  # kc diagnoses, emr and naaccr
+  ,`:=`(z_haskc_emr_state=.I>match(T,e_kc_i10,nomatch=1e6)+min(.I)-1
+        ,z_haskc_naaccr_state=.I>match(T,n_ddiag,nomatch=1e6)+min(.I)-1
+        # surgery, emr and naaccr
+        ,z_surg_emr_state=.I>match(T,a_e_neph_tf,nomatch=1e6)+min(.I)-1
+        ,z_surg_naaccr_state=.I>match(T,n_dsurg|n_rx3170,nomatch=1e6)+min(.I)-1)
+  ,by=patient_num][
+    ,`:=`(z_haskc_emr=any(z_haskc_emr_state)
+          ,z_haskc_naaccr=any(z_haskc_naaccr_state))
+    ,by=patient_num];
+## not using n_seer_kcancer for now because that is kidney _or_ renal pelvis
+#dat01[,z_haskc_naaccr := any(n_kcancer,na.rm=TRUE),by=patient_num];
+
+# sequence exploration (temporary home) ----
+#' ## sequence exploration
+#' 
+
+dat01tse <- rbind(
+  dat01[e_kc_i10==TRUE,.SD[1],by=patient_num,.SDcols='age_at_visit_days'][
+    ,event:='DiagEMR']
+  ,dat01[n_ddiag==TRUE,.SD[1],by=patient_num,.SDcols='age_at_visit_days'][
+    ,event:='DiagNAACCR']
+  ,dat01[a_e_neph_tf==TRUE,.SD,by=patient_num,.SDcols='age_at_visit_days'][
+    ,event:='SurgEMR']
+  ,dat01[n_dsurg|n_rx3170,.SD,by=patient_num,.SDcols='age_at_visit_days'][
+    ,event:='SurgNAACCR']
+  ,dat01[(n_dsurg|n_rx3170|a_e_neph_tf)&z_surg_emr_state&z_surg_naaccr_state
+         ,.SD[.N],by=patient_num,.SDcols='age_at_visit_days'][
+           ,event:='PostSurg']
+  ,dat01[z_haskc_emr_state&z_haskc_naaccr_state,.SD[1],by=patient_num
+         ,.SDcols='age_at_visit_days'][
+           ,event:='PostDiag'])[
+             ,time:=age_at_visit_days/7][,time:=time-min(time),by=patient_num];
+dat01tse <- rbind(dat01tse,dat01tse[,tail(.SD,1),by=patient_num][
+  # add final event one unit of time later to make sure it doesn't disappear
+  # during conversion to sts
+  ,`:=`(time=time+1,event='END')])[order(patient_num,time)];
+dat01tse <- rbind(dat01tse,dat01tse[event %in% c('SurgEMR','SurgNAACCR')
+                                          ,.SD[.N],by=c('patient_num','time')][
+                                            ,`:=`(time=time+1,event='SURGDONE')])[
+                                              order(patient_num,time)];
+
+# test subset, just patients who have diagnoses and surgeries in both data 
+# sources
+# dat01tse00 <- dat01tse[,`:=`(
+#   allevents=length(intersect(event,c('DiagEMR','DiagNAACCR','SurgEMR'
+#                                        ,'SurgNAACCR'))) == 4
+#   ,multisurg=sum(event %in% c('SurgEMR','SurgNAACCR'))>2),by=patient_num][
+#     allevents & multisurg]#[!event %in% c('PostDiag','PostSurg'),1:4];
+# # just diags
+# dat01tse01 <- dat01tse00[!event %in% c('SurgEMR','SurgNAACCR')];
+# 
+# dat01tse02 <- rbind(dat01tse00,dat01tse00[event %in% c('SurgEMR','SurgNAACCR')
+#                                       ,.SD[.N],by=c('patient_num','time')][
+#                                         ,`:=`(time=time+1,event='SURGDONE')])[
+#                                           order(patient_num,time)];
+
+
+stm <-seqe2stm(#unique(dat01tse00$event)
+  c('DiagEMR','DiagNAACCR','PostDiag','SurgEMR','SurgNAACCR','PostSurg'
+    ,'SURGDONE','END')
+  ,dropList=list('END'=c('DiagEMR','DiagNAACCR','PostDiag'
+                         ,'SurgEMR','SurgNAACCR','SURGDONE','PostSurg')
+                 ,'PostDiag'=c('DiagNAACCR','DiagEMR')
+                 ,'SURGDONE'=c('SurgEMR','SurgNAACCR','SURGDONE')
+                 ,'PostSurg'='SURGDONE'
+               ));
+stm <- gsub('.*END.*','END',stm) %>% 
+  gsub('(Diag(EMR|NAACCR)\\.){1,2}(PostDiag.*)','\\3',.) %>% 
+  gsub('DiagEMR\\.DiagNAACCR(\\.{0,1})','PostDiag\\1',.) %>% 
+  gsub('(.*)(\\.{0,1}Surg(EMR|NAACCR)){1,2}\\.PostSurg','\\1PostSurg',.) %>%
+  gsub('(.*)(\\.{0,1}Surg(EMR|NAACCR)){1,2}\\.PostSurg','\\1PostSurg',.) %>% 
+  gsub('\\.(Surg(EMR|NAACCR)\\.){0,2}SURGDONE','',.);
+  #gsub('SurgEMR\\.SurgNAACCR(\\.{0,1})','\\2PostSurg',.);
+
+#stm[stm=='END'] <- NA;
+
+dat01sts <- TSE_to_STS(dat01tse,id='patient_num',timestamp='time',stm=stm00
+                        ,tmax=1000,event='event');
+dat01sts[] <- lapply(dat01sts,.%>% ifelse(.=='END',NA,.) %>%
+                       gsub('.*SurgEMR\\.SurgNAACCR.*','XXX',.) %>% 
+                       gsub('.*(Surg(EMR|NAACCR)).*','\\1',.) %>% 
+                       gsub('XXX','SurgEMR.SurgNAACCR',.));
+
+dat01seq <- seqdef(dat01sts);
+
+#' Legend colors
+.seqpal<-with(attributes(dat01seq),{
+  pal<-rev(rainbow(length(alphabet),alpha=0.1)); 
+  case_when(grepl('^Surg',alphabet) ~ 
+              adjustcolor(pal,alpha.f=10,red.f=1.6,green.f=0.8)
+            ,grepl('Post',alphabet) ~ 
+              adjustcolor(pal,alpha.f=10,offset=rep_len(0.5,4))
+            ,TRUE~pal) %>% setNames(alphabet)});
+
+.seqpar <- seqplot(dat01seq,type='I',sortv='from.start',with.legend='auto'
+                   ,use.layout=T,cex.legend=0.5,cpal=.seqpal);
+
+dat01seq <- dat01[
+  ,.(visdays=age_at_visit_days-min(age_at_visit_days)
+     ,states=interaction(z_haskc_emr_state,z_haskc_naaccr_state,a_e_neph_tf
+                         ,n_dsurg|n_rx3170,drop = TRUE)),by=patient_num][
+                           ,z_stateid := rleidv(states),by=patient_num][
+                             ,.(start=max(min(visdays),1)
+                                ,end=max(max(visdays),1)
+                                # pick the state with the most matching 'TRUE'
+                                # values
+                                ,states=states[which.max(mostmatches(states
+                                                                     ,'TRUE'))])
+                             ,by=c('patient_num','z_stateid')][
+                               # first pass at fixing one-day-long spells
+                               ,`:=`(z_last=.I==max(.I)
+                                 ,startfinal=case_when(
+                                 # extend end date if possible
+                                 start==end & start>1 &
+                                   start - shift(end) >1 ~
+                                   start - 1
+                                 , TRUE ~ start)
+                                 # otherwise extend the start date if possible
+                                 ,endfinal=case_when(
+                                 start==end &
+                                   (.I==max(.I) | shift(start,-1)-end>1) ~
+                                   end + 1
+                                 , TRUE ~ end))
+                               ,by=patient_num][
+                                 ,fixnext:=coalesce(
+                                   (startfinal==endfinal & 
+                                     shift(startfinal,-1) - endfinal < 7) | 
+                                   (shift(startfinal)==shift(endfinal) & 
+                                      startfinal - shift(endfinal) < 7),FALSE)
+                                 ,by=patient_num][
+                                   ,relgroup:=rleidv(fixnext),by='patient_num'];
+# ,.(start=shift(age_at_visit_days,fill=head(age_at_visit_days,1)) + 
+#      1-min(age_at_visit_days)
+#    ,end=age_at_visit_days + 
+#      1-min(age_at_visit_days)
 
 #' ## Recode or derive variables
 #'
