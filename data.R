@@ -25,8 +25,9 @@ if(debug>0) source(.globalpath,chdir = TRUE, local=TRUE) else {
 #' Saving original file-list so we don't keep exporting functions and
 #' environment variables to other scripts
 .origfiles <- ls();
+#' regexps
+.re_neph <- "CPT:50240|CPT:1014157|CPT:50220|CPT:50225|CPT:50230|CPT:1008091|CPT:50234|CPT:50236|CPT:50548|CPT:50546|CPT:50545|CPT:50543|CPT:50593|CPT:50592";
 #+ echo=FALSE,message=FALSE
-# groupings
 
 # read data dictionaries ----
 #' Reading data dictionary
@@ -149,6 +150,14 @@ levels(dat01$a_n_recur)[!levels(dat01$a_n_recur) %in%
                             ,'Never disease-free','Disease-free'
                             ,grep('Ambig_',levels(dat01$a_n_recur)
                                   ,val=T))]<-'Recurred';
+#' Fix any natf values (but can't use c_natf until it's updated from previous 
+#' definitions)
+#' 
+for(ii in v(c_kcfact)) if(!is.logical(dat01[[ii]])){
+  dat01[[ii]] <- !is.na(dat01[[ii]])};
+
+#' indicator variable for nephrectomy
+dat01$a_e_neph_tf <- grepl(.re_neph,dat01$z_e_surg);
 
 #' Unified NAACCR diabetes comorbidity
 #' 
