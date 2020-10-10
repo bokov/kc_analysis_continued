@@ -270,44 +270,6 @@ dat01seq <- seqdef(dat01sts);
 .seqpar <- seqplot(dat01seq,type='I',sortv='from.start',with.legend='auto'
                    ,use.layout=T,cex.legend=0.5,cpal=.seqpal);
 
-dat01seq <- dat01[
-  ,.(visdays=age_at_visit_days-min(age_at_visit_days)
-     ,states=interaction(z_haskc_emr_state,z_haskc_naaccr_state,a_e_neph_tf
-                         ,n_dsurg|n_rx3170,drop = TRUE)),by=patient_num][
-                           ,z_stateid := rleidv(states),by=patient_num][
-                             ,.(start=max(min(visdays),1)
-                                ,end=max(max(visdays),1)
-                                # pick the state with the most matching 'TRUE'
-                                # values
-                                ,states=states[which.max(mostmatches(states
-                                                                     ,'TRUE'))])
-                             ,by=c('patient_num','z_stateid')][
-                               # first pass at fixing one-day-long spells
-                               ,`:=`(z_last=.I==max(.I)
-                                 ,startfinal=case_when(
-                                 # extend end date if possible
-                                 start==end & start>1 &
-                                   start - shift(end) >1 ~
-                                   start - 1
-                                 , TRUE ~ start)
-                                 # otherwise extend the start date if possible
-                                 ,endfinal=case_when(
-                                 start==end &
-                                   (.I==max(.I) | shift(start,-1)-end>1) ~
-                                   end + 1
-                                 , TRUE ~ end))
-                               ,by=patient_num][
-                                 ,fixnext:=coalesce(
-                                   (startfinal==endfinal & 
-                                     shift(startfinal,-1) - endfinal < 7) | 
-                                   (shift(startfinal)==shift(endfinal) & 
-                                      startfinal - shift(endfinal) < 7),FALSE)
-                                 ,by=patient_num][
-                                   ,relgroup:=rleidv(fixnext),by='patient_num'];
-# ,.(start=shift(age_at_visit_days,fill=head(age_at_visit_days,1)) + 
-#      1-min(age_at_visit_days)
-#    ,end=age_at_visit_days + 
-#      1-min(age_at_visit_days)
 
 #' ## Recode or derive variables
 #'
