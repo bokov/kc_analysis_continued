@@ -203,12 +203,15 @@ dat01tse <- rbind(
            ,event:='PostSurg']
   ,dat01[z_haskc_emr_state&z_haskc_naaccr_state,.SD[1],by=patient_num
          ,.SDcols='age_at_visit_days'][
-           ,event:='PostDiag'])[
-             ,time:=age_at_visit_days/7][,time:=time-min(time),by=patient_num];
-dat01tse <- rbind(dat01tse,dat01tse[,tail(.SD,1),by=patient_num][
-  # add final event one unit of time later to make sure it doesn't disappear
-  # during conversion to sts
-  ,`:=`(time=time+1,event='END')])[order(patient_num,time)];
+           ,event:='PostDiag']
+  ,dat01[,.SD[.N],by=patient_num,.SDcols='age_at_visit_days'][
+    ,`:=`(event='END')])[
+             ,time:=age_at_visit_days/7][,time:=time-min(time),by=patient_num][
+               order(patient_num,time)];
+# dat01tse <- rbind(dat01tse,dat01tse[,tail(.SD,1),by=patient_num][
+#   # add final event one unit of time later to make sure it doesn't disappear
+#   # during conversion to sts
+#   ,`:=`(time=time+1,event='END')])[order(patient_num,time)];
 dat01tse <- rbind(dat01tse,dat01tse[event %in% c('SurgEMR','SurgNAACCR')
                                           ,.SD[.N],by=c('patient_num','time')][
                                             ,`:=`(time=time+1,event='SURGDONE')])[
@@ -255,8 +258,26 @@ dat01sts[] <- lapply(dat01sts,.%>% ifelse(.=='END',NA,.) %>%
                        gsub('.*SurgEMR\\.SurgNAACCR.*','XXX',.) %>% 
                        gsub('.*(Surg(EMR|NAACCR)).*','\\1',.) %>% 
                        gsub('XXX','SurgEMR.SurgNAACCR',.));
+# getting rid of empty records
+dat01sts00 <- dat01sts[rowSums(is.na(dat01sts))<ncol(dat01sts)-2,];
 
-dat01seq <- seqdef(dat01sts);
+dat01seq <- seqdef(dat01sts00);
+
+# similarity ----
+#' Clustering of similare patient histories. Right now the clustering sucks
+#' but at least I figured out how to get it to work. Need to choose the right
+#' distance metric and parameters.
+
+#' transition costs
+dat01costs <- seqcost(dat01seq, method = "INDELSLOG",with.missing = F);
+
+#' distance
+dat01dist <- seqdist(dat01seq,method='OMspell',indel=max(dat01costs$indel)
+                     ,sm=dat01costs$sm);
+#' convert it to a distance matrix and cluster that. `dat01hc$order` can be
+#' passed to the `sortv` argument of `seqplot()`.
+dat01hc <- hclust(as.dist(dat01dist));
+
 
 #' Legend colors
 .seqpal<-with(attributes(dat01seq),{
