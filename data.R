@@ -12,7 +12,8 @@ debug <- 0;
 # manually downloaded and installed from https://github.com/wtcooper/icdcoder/
 # (package hasn't been updated in 5 years, but only existing way to map ICD9 to
 # ICD10
-.projpackages <- c('dplyr','data.table','forcats','pander','icd');
+.projpackages <- c('dplyr','data.table','forcats','pander','icd'
+                   ,'TraMineRextras','cluster');
 .globalpath <- c(list.files(patt='^global.R$',full=T)
                  ,list.files(path='scripts',patt='^global.R$',full=T)
                  ,list.files(rec=T,pattern='^global.R$',full=T)
@@ -252,7 +253,7 @@ stm <- gsub('.*END.*','END',stm) %>%
 
 #stm[stm=='END'] <- NA;
 
-dat01sts <- TSE_to_STS(dat01tse,id='patient_num',timestamp='time',stm=stm00
+dat01sts <- TSE_to_STS(dat01tse,id='patient_num',timestamp='time',stm=stm
                         ,tmax=1000,event='event');
 dat01sts[] <- lapply(dat01sts,.%>% ifelse(.=='END',NA,.) %>%
                        gsub('.*SurgEMR\\.SurgNAACCR.*','XXX',.) %>% 
@@ -268,16 +269,30 @@ dat01seq <- seqdef(dat01sts00);
 #' but at least I figured out how to get it to work. Need to choose the right
 #' distance metric and parameters.
 
-#' transition costs
-dat01costs <- seqcost(dat01seq, method = "INDELSLOG",with.missing = F);
+# transition costs
+# dat01costs <- seqcost(dat01seq, method = "INDELSLOG",with.missing = F);
+# distance
+# dat01dist <- seqdist(dat01seq,method='OMspell',indel=max(dat01costs$indel)
+#                      ,sm=dat01costs$sm);
+dat01dist <- seqdist(dat01seq,method='OM',indel=1,sm="TRATE");
 
-#' distance
-dat01dist <- seqdist(dat01seq,method='OMspell',indel=max(dat01costs$indel)
-                     ,sm=dat01costs$sm);
-#' convert it to a distance matrix and cluster that. `dat01hc$order` can be
-#' passed to the `sortv` argument of `seqplot()`.
-dat01hc <- hclust(as.dist(dat01dist));
+# #' convert it to a distance matrix and cluster that. `dat01hc$order` can be
+# #' passed to the `sortv` argument of `seqplot()`.
+# dat01hc <- hclust(as.dist(dat01dist));
+dat01cl <- agnes(dat01dist00,diss=T,method='ward');
+#' The following can also be passed to the `sortv` argument
+dat01clk4 <- cutree(dat01cl,k=4);
 
+#' Alternatively, can group by which main events represented
+.prepdat01grp <- data.table(sapply(
+  c('DiagEMR','SurgEMR','DiagNAACCR','SurgNAACCR','PostDiag','PostSurg')
+  ,function(xx) apply(dat01seq,1,function(yy) any(grepl(xx,yy))) ))[
+    ,`:=`(DiagEMR=DiagEMR|PostDiag,SurgEMR=SurgEMR|PostSurg
+          ,DiagNAACCR=DiagNAACCR|PostDiag,SurgNAACCR=SurgNAACCR|PostSurg)];
+dat01grp <- lapply(colnames(.prepdat01grp)[1:4],function(xx){
+  ifelse(.prepdat01grp[[xx]]>0,xx,'')}) %>% interaction(drop=T);
+levels(dat01grp) <- gsub('\\.{2,}','.',levels(dat01grp)) %>% 
+  gsub('^\\.|\\.$','',.);
 
 #' Legend colors
 .seqpal<-with(attributes(dat01seq),{
@@ -288,9 +303,15 @@ dat01hc <- hclust(as.dist(dat01dist));
               adjustcolor(pal,alpha.f=10,offset=rep_len(0.5,4))
             ,TRUE~pal) %>% setNames(alphabet)});
 
-.seqpar <- seqplot(dat01seq,type='I',sortv='from.start',with.legend='auto'
-                   ,use.layout=T,cex.legend=0.5,cpal=.seqpal);
-
+# .seqpar <- seqplot(dat01seq,type='I',sortv='from.start',with.legend='auto'
+#                    ,use.layout=T,cex.legend=0.5,cpal=.seqpal);
+.seqpar <- subset(dat01seq[,1:700],dat01grp=='DiagEMR.SurgEMR.DiagNAACCR') %>%
+  seqplot(type='I',sortv='from.start'
+          #,with.legend='auto',axes='bottom',ylab=NA,use.layout=T,
+          ,xtlab=1:700, cex.legend=0.8,cpal=.seqpal,cex.axis=0.8);
+plot(dat01seq[,1:700],idxs = dat01grp=='DiagEMR.SurgEMR.DiagNAACCR'
+     ,border=NA,cpal=.seqpal,cex.axis=0.8,xtlab=1:700);
+#     ,xtlab=1:700, cex.legend=0.8);
 
 #' ## Recode or derive variables
 #'
